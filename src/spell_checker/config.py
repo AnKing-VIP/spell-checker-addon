@@ -6,6 +6,7 @@
 
 
 import os
+import re
 from codecs import open
 from typing import Mapping
 
@@ -15,7 +16,9 @@ from anki.utils import json
 from aqt import mw
 from aqt.qt import *
 
-ANKI21 = version.startswith("2.1.")
+version_re = re.compile(r"^(?P<year>\d*)\.(?P<month>\d*)(\.(?P<patch>\d*))?$")
+mo = version_re.search(version)
+ANKI21 = version.startswith("2.1.") or int(mo.group("year")) >= 23
 
 
 class Config:
