@@ -41,6 +41,7 @@ def onContextMenuEvent(web: AnkiWebView, menu):
         profile.setSpellCheckLanguages(dictMan.getDictionaries())
 
     spellCheckEnabled = profile.isSpellCheckEnabled()
+    print(f"{spellCheckEnabled=}")
     menu.addSeparator()
     action = menu.addAction(_("Spell Checker"))
     action.setCheckable(True)
