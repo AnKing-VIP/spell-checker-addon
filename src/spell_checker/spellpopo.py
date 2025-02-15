@@ -12,7 +12,6 @@ from aqt.qt import *
 from aqt import mw
 from aqt.webview import AnkiWebView
 from anki.hooks import wrap, addHook
-from anki.lang import _
 from functools import partial
 from pathlib import Path
 import shutil
@@ -41,9 +40,8 @@ def onContextMenuEvent(web: AnkiWebView, menu):
         profile.setSpellCheckLanguages(dictMan.getDictionaries())
 
     spellCheckEnabled = profile.isSpellCheckEnabled()
-    print(f"{spellCheckEnabled=}")
     menu.addSeparator()
-    action = menu.addAction(_("Spell Checker"))
+    action = menu.addAction("Spell Checker")
     action.setCheckable(True)
     action.setChecked(spellCheckEnabled)
     action.triggered.connect(
