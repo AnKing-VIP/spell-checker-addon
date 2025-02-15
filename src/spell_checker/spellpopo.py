@@ -16,7 +16,7 @@ from functools import partial
 from pathlib import Path
 import shutil
 
-from .dict import DictionaryManager
+from .dict import DictionaryManager, add_word_to_custom_dictionary
 from .config import Config
 from .const import BUNDLED_DICTS_DIR, DICT_DIR
 
@@ -29,6 +29,13 @@ dictMan = DictionaryManager()
 def replaceMisspelledWord(page, sug_word):
     page.replaceMisspelledWord(sug_word)
 
+
+def on_add_word_to_custom_dictionary(web: AnkiWebView):
+    profile = web._page.profile()
+    spellCheckEnabled = profile.isSpellCheckEnabled()
+    profile.setSpellCheckEnabled(False)
+    add_word_to_custom_dictionary(web, web.selectedText().strip())
+    profile.setSpellCheckEnabled(spellCheckEnabled)
 
 def onContextMenuEvent(web: AnkiWebView, menu):
     profile = web._page.profile()
@@ -47,6 +54,8 @@ def onContextMenuEvent(web: AnkiWebView, menu):
     action.triggered.connect(
         lambda: profile.setSpellCheckEnabled(not spellCheckEnabled)
     )
+    action = menu.addAction("Add to custom dictionary")
+    action.triggered.connect(lambda: on_add_word_to_custom_dictionary(web))
 
     if spellCheckEnabled and conf.get("duck_mode", False):
         firstAct = menu.actions()[0]
