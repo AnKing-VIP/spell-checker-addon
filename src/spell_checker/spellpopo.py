@@ -31,14 +31,14 @@ def replaceMisspelledWord(page, sug_word):
 
 
 def on_add_word_to_custom_dictionary(web: AnkiWebView):
-    profile = web._page.profile()
+    profile = web.page().profile()
     spellCheckEnabled = profile.isSpellCheckEnabled()
     profile.setSpellCheckEnabled(False)
     add_word_to_custom_dictionary(web, web.selectedText().strip())
     profile.setSpellCheckEnabled(spellCheckEnabled)
 
 def onContextMenuEvent(web: AnkiWebView, menu):
-    profile = web._page.profile()
+    profile = web.page().profile()
 
     # For Edit field during review
     if mw.state == "review":
@@ -64,7 +64,7 @@ def onContextMenuEvent(web: AnkiWebView, menu):
             action = menu.addAction(sug_word)
             menu.insertAction(firstAct, action)
             action.triggered.connect(
-                partial(replaceMisspelledWord, web._page, sug_word)
+                partial(replaceMisspelledWord, web.page(), sug_word)
             )
             if conf.get("bold_text", True):
                 f = action.font()
@@ -101,7 +101,7 @@ addHook("AnkiWebView.contextMenuEvent", onContextMenuEvent)
 
 
 def setupBDIC(web: AnkiWebView, *args, **kwargs):
-    profile = web._page.profile()
+    profile = web.page().profile()
     profile.setSpellCheckEnabled(conf.get("auto_startup", False))
     profile.setSpellCheckLanguages(dictMan.getDictionaries())
 

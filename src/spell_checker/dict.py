@@ -98,7 +98,7 @@ class DictionaryManager:
         a.triggered.connect(self.showConfig)
 
     def showConfig(self):
-        profile = mw.web._page.profile()
+        profile = mw.web.page().profile()
 
         profile.setSpellCheckEnabled(False)
         profile.setSpellCheckLanguages({})
