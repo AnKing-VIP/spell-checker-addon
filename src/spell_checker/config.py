@@ -6,19 +6,12 @@
 
 
 import os
-import re
-from codecs import open
 from typing import Mapping
 
-from anki import version
-from anki.hooks import addHook, runHook
+from anki.hooks import runHook
 from anki.utils import json
 from aqt import mw
 from aqt.qt import *
-
-version_re = re.compile(r"^(?P<year>\d*)\.(?P<month>\d*)(\.(?P<patch>\d*))?$")
-mo = version_re.search(version)
-ANKI21 = version.startswith("2.1.") or int(mo.group("year")) >= 23
 
 
 class Config:
@@ -73,10 +66,7 @@ class Config:
 
 # From: https://stackoverflow.com/questions/3232943/
 def nestedUpdate(d, u):
-    if ANKI21:  # py3.3+
-        itms = u.items()
-    else:  # py2.7
-        itms = u.iteritems()
+    itms = u.items()
     for k, v in itms:
         if isinstance(v, Mapping):
             d[k] = nestedUpdate(d.get(k, {}), v)
